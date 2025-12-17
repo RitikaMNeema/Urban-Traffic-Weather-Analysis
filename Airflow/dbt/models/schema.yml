@@ -1,0 +1,163 @@
+# schema.yml
+# Path: /opt/airflow/dbt/models/schema.yml
+# Note: Sources are defined in sources.yml to avoid duplication
+
+version: 2
+
+models:
+  # Staging models
+  - name: stg_traffic_accidents
+    description: "Cleaned and standardized traffic accident data"
+    columns:
+      - name: accident_id
+        description: "Unique accident identifier"
+        tests:
+          - unique
+          - not_null
+      - name: severity
+        description: "Accident severity (1-4)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4]
+      - name: start_time
+        description: "Accident start timestamp"
+        tests:
+          - not_null
+      - name: city
+        description: "City where accident occurred"
+        tests:
+          - not_null
+  
+  - name: stg_weather_historical
+    description: "Cleaned historical weather data"
+    columns:
+      - name: record_id
+        description: "Unique weather record identifier"
+        tests:
+          - unique
+          - not_null
+      - name: temperature_f
+        description: "Temperature in Fahrenheit"
+        tests:
+          - not_null
+  
+  - name: stg_traffic_flow_realtime
+    description: "Cleaned real-time traffic flow data with congestion calculations"
+    columns:
+      - name: flow_id
+        description: "Unique flow measurement identifier"
+        tests:
+          - unique
+          - not_null
+      - name: city
+        description: "City name"
+        tests:
+          - not_null
+      - name: timestamp
+        description: "Observation timestamp"
+        tests:
+          - not_null
+      - name: current_speed_mph
+        description: "Current traffic speed in MPH"
+      - name: free_flow_speed_mph
+        description: "Free flow speed in MPH"
+      - name: speed_reduction_pct
+        description: "Percentage reduction from free flow speed"
+      - name: delay_sec
+        description: "Delay in seconds vs free flow"
+      - name: congestion_level
+        description: "Categorized congestion level (Free Flow, Light, Moderate, Heavy, Severe)"
+        tests:
+          - accepted_values:
+              values: ['Free Flow', 'Light', 'Moderate', 'Heavy', 'Severe']
+  
+  # Analytics models
+  - name: accident_weather_correlation
+    description: "Accidents joined with weather conditions"
+    columns:
+      - name: accident_id
+        description: "Unique accident identifier"
+        tests:
+          - unique
+          - not_null
+      - name: risk_score
+        description: "Calculated risk score (0-10)"
+      - name: risk_category
+        description: "Risk categorization"
+        tests:
+          - accepted_values:
+              values: ['Low Risk', 'Medium Risk', 'High Risk']
+  
+  # Marts
+  - name: mart_traffic_safety_dashboard
+    description: "Traffic safety metrics aggregated for dashboarding"
+    columns:
+      - name: accident_date
+        description: "Date of accidents"
+      - name: city
+        description: "City name"
+      - name: total_accidents
+        description: "Total number of accidents"
+      - name: serious_accidents
+        description: "Number of serious accidents (severity >= 3)"
+  
+  - name: mart_realtime_traffic_dashboard
+    description: "Real-time traffic metrics for live monitoring dashboard"
+    columns:
+      - name: city
+        description: "City name"
+      - name: current_timestamp
+        description: "Current observation time"
+      - name: avg_speed
+        description: "Average current speed across city"
+      - name: congestion_score
+        description: "Overall congestion score for city"
+
+  - name: fct_weather_current
+    description: "Fact table for current weather conditions with enhanced metrics and analytics"
+    columns:
+      - name: record_id
+        description: "Unique identifier for each weather record"
+        tests:
+          - unique
+          - not_null
+      
+      - name: city
+        description: "City name"
+        tests:
+          - not_null
+      
+      - name: region
+        description: "California region (Bay Area, Southern California, etc.)"
+        tests:
+          - not_null
+      
+      - name: temperature_f
+        description: "Current temperature in Fahrenheit"
+        tests:
+          - not_null
+      
+      - name: temperature_category
+        description: "Temperature classification (Freezing, Cold, Cool, Mild, Warm, Hot, Very Hot)"
+      
+      - name: comfort_index
+        description: "Overall weather comfort rating (Excellent, Good, Fair, Poor)"
+      
+      - name: time_of_day
+        description: "Time period (Morning, Afternoon, Evening, Night)"
+      
+      - name: wind_direction_cardinal
+        description: "Wind direction in cardinal points (N, NE, E, SE, S, SW, W, NW)"
+      
+      - name: region_avg_temp
+        description: "Average temperature across the region"
+      
+      - name: state_avg_temp
+        description: "Average temperature across California"
+      
+      - name: temp_diff_from_region_avg
+        description: "Temperature difference from regional average"
+      
+      - name: temp_diff_from_state_avg
+        description: "Temperature difference from state average"

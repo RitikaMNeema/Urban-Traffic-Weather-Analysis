@@ -1,0 +1,147 @@
+
+name: 'traffic_weather_analytics'
+version: '1.0.0'
+config-version: 2
+
+profile: 'traffic_weather_analytics'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Query comments for tracking
+query-comment:
+  comment: "dbt_run: {{ dbt_version }}, invocation_id: {{ invocation_id }}"
+  append: true
+
+models:
+  traffic_weather_analytics:
+    # Staging models - basic cleaning and typing
+    staging:
+      +materialized: view
+      +schema: STAGING
+      +tags: ['staging']
+      +docs:
+        node_color: "#4CAF50"
+      
+      traffic:
+        +tags: ['traffic', 'staging']
+        +persist_docs:
+          relation: true
+          columns: true
+      
+      weather:
+        +tags: ['weather', 'staging']
+        +persist_docs:
+          relation: true
+          columns: true
+    
+    # Intermediate models (if you have any)
+    intermediate:
+      +materialized: view
+      +schema: INTERMEDIATE
+      +tags: ['intermediate']
+    
+    # Analytics models - business logic
+    analytics:
+      +materialized: table
+      +schema: ANALYTICS
+      +tags: ['analytics']
+      +docs:
+        node_color: "#2196F3"
+      +persist_docs:
+        relation: true
+        columns: true
+      
+      traffic:
+        +tags: ['traffic', 'analytics']
+      
+      weather:
+        +tags: ['weather', 'analytics']
+      
+      integrated:
+        +tags: ['integrated', 'analytics']
+        # Use table materialization first, switch to incremental once working
+        accident_weather_correlation:
+          +materialized: table
+          +unique_key: accident_id
+    
+    # Data marts - final consumption layer
+    marts:
+      +materialized: table
+      +schema: MARTS
+      +tags: ['marts']
+      +docs:
+        node_color: "#FF9800"
+      +persist_docs:
+        relation: true
+        columns: true
+      
+      # Use table materialization first for debugging
+      mart_realtime_traffic_dashboard:
+        +materialized: table
+      
+      mart_traffic_safety_dashboard:
+        +materialized: table
+      
+      mart_realtime_weather_dashboard:
+        +materialized: table
+
+snapshots:
+  traffic_weather_analytics:
+    +target_schema: SNAPSHOTS
+    +strategy: timestamp
+    +updated_at: timestamp
+    +tags: ['snapshot', 'scd2']
+    +persist_docs:
+      relation: true
+      columns: true
+
+seeds:
+  traffic_weather_analytics:
+    +schema: STAGING
+    +tags: ['seeds']
+
+# Source freshness defaults
+sources:
+  traffic_weather_analytics:
+    +warn_after: {count: 2, period: hour}
+    +error_after: {count: 6, period: hour}
+
+vars:
+  # Define start date for historical analysis
+  analysis_start_date: '2020-01-01'
+  
+  # Severity thresholds
+  severe_accident_threshold: 3
+  high_delay_threshold: 300  # seconds
+  
+  # Weather thresholds for adverse conditions
+  heavy_rain_threshold: 0.1  # inches per hour
+  high_wind_threshold: 25    # mph
+  poor_visibility_threshold: 2  # miles
+  freezing_threshold: 32     # fahrenheit
+  
+  # Time windows for analysis
+  recent_days_threshold: 30
+  historical_years: 5
+  
+  # Performance tuning
+  incremental_lookback_days: 7
+  snapshot_retention_days: 90
+  
+  # Data quality thresholds
+  max_duplicate_rate: 0.01  # 1%
+  min_record_count: 1000
+  
+  # Clustering keys for performance
+  default_cluster_keys: ['date', 'city']
+

@@ -1,0 +1,254 @@
+version: 2
+
+sources:
+  
+  - name: raw
+    description: "Raw real-time data loaded from APIs (traffic, weather)"
+    database: USER_DB_JACKAL
+    schema: RAW
+    tables:
+      - name: TRAFFIC_FLOW_RAW
+        description: "Raw real-time traffic flow data from TomTom API"
+        columns:
+          - name: flow_id
+            description: "Unique identifier for traffic flow measurement"
+          - name: city
+            description: "City name"
+          - name: state
+            description: "State abbreviation"
+          - name: timestamp
+            description: "Timestamp of measurement"
+          - name: latitude
+            description: "Latitude coordinate"
+          - name: longitude
+            description: "Longitude coordinate"
+          - name: current_speed
+            description: "Current traffic speed in MPH"
+          - name: free_flow_speed
+            description: "Free flow speed in MPH"
+          - name: current_travel_time
+            description: "Current travel time in seconds"
+          - name: free_flow_travel_time
+            description: "Free flow travel time in seconds"
+          - name: confidence
+            description: "Confidence level of measurement"
+          - name: road_closure
+            description: "Whether road is closed"
+          - name: road_name
+            description: "Name of road segment"
+          - name: raw_json
+            description: "Full JSON response from API"
+          - name: load_timestamp
+            description: "When data was loaded to Snowflake"
+
+      - name: TRAFFIC_INCIDENTS_RAW
+        description: "Raw real-time traffic incidents from TomTom API"
+        columns:
+          - name: incident_id
+            description: "Unique identifier for incident"
+          - name: city
+            description: "City name"
+          - name: state
+            description: "State abbreviation"
+          - name: timestamp
+            description: "Timestamp of incident report"
+          - name: latitude
+            description: "Latitude coordinate"
+          - name: longitude
+            description: "Longitude coordinate"
+          - name: icon_category
+            description: "Category of incident"
+          - name: magnitude_of_delay
+            description: "Delay magnitude"
+          - name: description
+            description: "Incident description"
+          - name: start_time
+            description: "When incident started"
+          - name: end_time
+            description: "When incident ended"
+          - name: raw_json
+            description: "Full JSON response from API"
+          - name: load_timestamp
+            description: "When data was loaded to Snowflake"
+
+      - name: WEATHER_CALIFORNIA_REALTIME_RAW
+        description: "Raw real-time weather data from Open-Meteo API"
+        columns:
+          - name: record_id
+            description: "Unique identifier for weather record"
+          - name: city
+            description: "City name"
+          - name: state
+            description: "State abbreviation"
+          - name: region
+            description: "California region"
+          - name: county
+            description: "County name"
+          - name: latitude
+            description: "Latitude coordinate"
+          - name: longitude
+            description: "Longitude coordinate"
+          - name: timestamp_str
+            description: "Timestamp as string"
+          - name: date
+            description: "Date of measurement"
+          - name: hour
+            description: "Hour of measurement"
+          - name: temperature_f
+            description: "Temperature in Fahrenheit"
+          - name: feels_like_f
+            description: "Feels like temperature"
+          - name: humidity_pct
+            description: "Humidity percentage"
+          - name: wind_speed_mph
+            description: "Wind speed in MPH"
+          - name: weather_main
+            description: "Main weather condition"
+          - name: weather_description
+            description: "Detailed weather description"
+          - name: raw_json
+            description: "Full JSON response from API"
+          - name: load_timestamp
+            description: "When data was loaded to Snowflake"
+
+
+  - name: raw_archive
+    description: "Raw historical data loaded from external sources"
+    database: USER_DB_JACKAL
+    schema: RAW_ARCHIVE
+    tables:
+      - name: TRAFFIC_ACCIDENTS_RAW
+        description: "Raw historical traffic accidents from Kaggle (California only)"
+        columns:
+          - name: accident_id
+            description: "Unique accident identifier"
+          - name: severity
+            description: "Accident severity (1-4)"
+          - name: start_time
+            description: "When accident started"
+          - name: end_time
+            description: "When accident ended"
+          - name: start_lat
+            description: "Latitude coordinate"
+          - name: start_lng
+            description: "Longitude coordinate"
+          - name: distance_mi
+            description: "Distance affected in miles"
+          - name: description
+            description: "Accident description"
+          - name: street
+            description: "Street name"
+          - name: city
+            description: "City name"
+          - name: county
+            description: "County name"
+          - name: state
+            description: "State abbreviation"
+          - name: zipcode
+            description: "ZIP code"
+          - name: country
+            description: "Country code"
+          - name: timezone
+            description: "Timezone"
+          - name: weather_timestamp
+            description: "Weather observation timestamp"
+          - name: temperature_f
+            description: "Temperature in Fahrenheit"
+          - name: wind_chill_f
+            description: "Wind chill temperature"
+          - name: humidity_pct
+            description: "Humidity percentage"
+          - name: pressure_in
+            description: "Pressure in inches"
+          - name: visibility_mi
+            description: "Visibility in miles"
+          - name: wind_direction
+            description: "Wind direction"
+          - name: wind_speed_mph
+            description: "Wind speed in MPH"
+          - name: precipitation_in
+            description: "Precipitation in inches"
+          - name: weather_condition
+            description: "Weather condition description"
+          - name: amenity
+            description: "Has amenity flag"
+          - name: bump
+            description: "Has bump flag"
+          - name: crossing
+            description: "Has crossing flag"
+          - name: give_way
+            description: "Has give way flag"
+          - name: junction
+            description: "Has junction flag"
+          - name: no_exit
+            description: "Has no exit flag"
+          - name: railway
+            description: "Has railway flag"
+          - name: roundabout
+            description: "Has roundabout flag"
+          - name: station
+            description: "Has station flag"
+          - name: stop
+            description: "Has stop flag"
+          - name: traffic_calming
+            description: "Has traffic calming flag"
+          - name: traffic_signal
+            description: "Has traffic signal flag"
+          - name: turning_loop
+            description: "Has turning loop flag"
+          - name: sunrise_sunset
+            description: "Day or Night"
+          - name: civil_twilight
+            description: "Civil twilight"
+          - name: nautical_twilight
+            description: "Nautical twilight"
+          - name: astronomical_twilight
+            description: "Astronomical twilight"
+          - name: load_timestamp
+            description: "When data was loaded to Snowflake"
+
+      - name: WEATHER_CALIFORNIA_HISTORICAL_RAW
+        description: "Raw historical weather data from Open-Meteo Archive API"
+        columns:
+          - name: record_id
+            description: "Unique identifier for weather record"
+          - name: city
+            description: "City name"
+          - name: state
+            description: "State abbreviation"
+          - name: region
+            description: "California region"
+          - name: county
+            description: "County name"
+          - name: latitude
+            description: "Latitude coordinate"
+          - name: longitude
+            description: "Longitude coordinate"
+          - name: timestamp_utc
+            description: "Timestamp in UTC"
+          - name: temperature_f
+            description: "Temperature in Fahrenheit"
+          - name: relative_humidity_pct
+            description: "Relative humidity percentage"
+          - name: precipitation_mm
+            description: "Precipitation in millimeters"
+          - name: rain_mm
+            description: "Rain in millimeters"
+          - name: snowfall_mm
+            description: "Snowfall in millimeters"
+          - name: cloud_cover_pct
+            description: "Cloud cover percentage"
+          - name: pressure_msl_hpa
+            description: "Mean sea level pressure in hPa"
+          - name: wind_speed_mph
+            description: "Wind speed in MPH"
+          - name: wind_direction_deg
+            description: "Wind direction in degrees"
+          - name: wind_gusts_mph
+            description: "Wind gusts in MPH"
+          - name: weather_code
+            description: "WMO weather code"
+          - name: load_timestamp
+            description: "When data was loaded to Snowflake"
+          - name: data_source
+            description: "Data source identifier"
