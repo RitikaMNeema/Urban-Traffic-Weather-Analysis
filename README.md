@@ -114,3 +114,7 @@ City-by-city comparisons
 7-day forecast
 Real-time adjustments
 City risk scoring
+
+<img width="1621" height="1098" alt="Screenshot 2025-12-09 at 5 26 26 PM" src="https://github.com/user-attachments/assets/e8046f1a-a982-48c2-8718-4475507140d0" />
+<img width="1629" height="1111" alt="Screenshot 2025-12-09 at 5 26 05 PM" src="https://github.com/user-attachments/assets/6ed2013b-aa1f-4181-bf50-2481ea15265b" />
+<img width="870" height="553" alt="Screenshot 2025-12-09 at 3 28 01 PM" src="https://github.com/user-attachments/assets/b9510eec-1160-4d4d-9c86-e07e2fab1929" />
