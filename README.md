@@ -2,7 +2,8 @@
 
 This project integrates real-time traffic, historical accident data, multi-year weather datasets, and machine learning forecasting into a unified data platform capable of producing insights and risk predictions for cities.
 
-It is built using:
+**It is built using:**
+
 Apache Airflow – Workflow orchestration
 Snowflake – Cloud data warehousing
 dbt – SQL transformations and modeling
