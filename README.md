@@ -84,7 +84,7 @@ The project employs a modern cloud-native architecture designed for scalability 
 - **Coverage:** 50+ major California cities
 
 **Open-Meteo Forecast API**
-- **Update Frequency:** 15-minute intervals
+- **Update Frequency:** 30-minute intervals
 - **Format:** JSON API responses
 - **Parameters:** Current conditions plus 7-day forecasts
 - **Resolution:** High-resolution global coverage with California focus
