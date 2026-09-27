@@ -2,7 +2,7 @@
 
 **A Data-Driven Approach to Smart Urban Mobility**
 
-**Author:** Ritika Mukesh Neema
+**Author:** Ritika Mukesh Neema, Nithiya Anantharaman, Sneha Tumkur Narendra
 
 **Course:** DATA 226  
 **Tools:** Airflow • Snowflake • dbt • Preset • TomTom API • Open-Meteo API
