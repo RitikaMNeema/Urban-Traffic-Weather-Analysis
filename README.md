@@ -761,7 +761,7 @@ dbt run --select model_name
 
 ## 👥 Author
 
-**Ritika Mukesh Neema**  
+**Ritika Mukesh Neema, Nithiya Anantharaman, Sneha Tumkur Narendra**  
 San Jose State University  
 DATA 226 - Fall 2025
 
